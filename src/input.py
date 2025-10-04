@@ -130,8 +130,8 @@ class InputGUI:
             # Algoritmayı çalıştır
             schedule, waiting_times, avg_waiting_time = run_algorithm(processes, algorithm, quantum)
             
-            # Sonuçları göster
-            visualize_results(schedule, waiting_times, avg_waiting_time, mode='gui')
+            # Sonuçları göster, algoritma ve süreçleri geçir
+            visualize_results(schedule, waiting_times, avg_waiting_time, mode='gui', algorithm=algorithm.upper(), processes=processes)
         
         except ValueError as e:
             messagebox.showerror("Error", str(e))
