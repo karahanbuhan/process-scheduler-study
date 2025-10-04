@@ -82,21 +82,5 @@ This launches a Tkinter GUI where you can input processes, select an algorithm, 
 
 ---
 
-## Project Structure
-
-```
-process_scheduler_study/
-├── venv/                  # Virtual environment (not included in Git)
-├── main.py                # Main script to run the GUI
-├── input.py               # Tkinter GUI for input collection
-├── algorithms.py          # FCFS, SJF, and RR implementations
-├── visualizer.py          # Gantt Chart and result visualization
-├── LICENSE                # MIT License
-├── README.md              # Project documentation
-└── requirements.txt       # Python dependencies
-```
-
----
-
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
