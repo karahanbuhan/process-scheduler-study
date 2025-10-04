@@ -60,7 +60,17 @@ class InputGUI:
         # Eski girişleri temizle
         for widget in self.process_frame.winfo_children():
             widget.destroy()
-        self.entries = []
+        
+        # self.entries'i yeni sayıya göre ayarla
+        while len(self.entries) < num:
+            i = len(self.entries)
+            pid_var = tk.StringVar(value=f"p{i+1}")
+            arrival_var = tk.StringVar(value="0")
+            burst_var = tk.StringVar(value=str(randint(1, 10)))
+            self.entries.append((pid_var, arrival_var, burst_var))
+        
+        if len(self.entries) > num:
+            self.entries = self.entries[:num]
         
         # Başlık satırı
         tk.Label(self.process_frame, text="PID").grid(row=0, column=0, padx=5, pady=2)
@@ -69,15 +79,11 @@ class InputGUI:
         
         # Süreç girişleri
         for i in range(num):
-            pid_var = tk.StringVar(value=f"p{i+1}")
-            arrival_var = tk.StringVar(value="0")  # Arrival time set to 0
-            burst_var = tk.StringVar(value=str(randint(1, 10)))
+            pid_var, arrival_var, burst_var = self.entries[i]
             
             tk.Entry(self.process_frame, textvariable=pid_var, width=10).grid(row=i+1, column=0, padx=5, pady=2)
             tk.Entry(self.process_frame, textvariable=arrival_var, width=10).grid(row=i+1, column=1, padx=5, pady=2)
             tk.Entry(self.process_frame, textvariable=burst_var, width=10).grid(row=i+1, column=2, padx=5, pady=2)
-            
-            self.entries.append((pid_var, arrival_var, burst_var))
     
     def generate_random(self):
         """Rastgele süreçler üret ve giriş alanlarını doldur."""
@@ -89,27 +95,8 @@ class InputGUI:
             messagebox.showerror("Error", "Please enter a valid number (1-10)")
             return
         
-        # Eski girişleri temizle
-        for widget in self.process_frame.winfo_children():
-            widget.destroy()
         self.entries = []
-        
-        # Başlık satırı
-        tk.Label(self.process_frame, text="PID").grid(row=0, column=0, padx=5, pady=2)
-        tk.Label(self.process_frame, text="Arrival Time").grid(row=0, column=1, padx=5, pady=2)
-        tk.Label(self.process_frame, text="Burst Time").grid(row=0, column=2, padx=5, pady=2)
-        
-        # Rastgele süreç girişleri
-        for i in range(num):
-            pid_var = tk.StringVar(value=f"p{i+1}")
-            arrival_var = tk.StringVar(value="0")  # Random arrival time set to 0
-            burst_var = tk.StringVar(value=str(randint(1, 10)))
-            
-            tk.Entry(self.process_frame, textvariable=pid_var, width=10).grid(row=i+1, column=0, padx=5, pady=2)
-            tk.Entry(self.process_frame, textvariable=arrival_var, width=10).grid(row=i+1, column=1, padx=5, pady=2)
-            tk.Entry(self.process_frame, textvariable=burst_var, width=10).grid(row=i+1, column=2, padx=5, pady=2)
-            
-            self.entries.append((pid_var, arrival_var, burst_var))
+        self.create_process_inputs()
     
     def run_simulation(self):
         """Süreçleri topla, algoritmayı çalıştır ve sonuçları göster."""
