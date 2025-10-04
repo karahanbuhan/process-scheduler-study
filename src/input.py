@@ -19,8 +19,8 @@ class InputGUI:
         
         # Algoritma seçimi
         tk.Label(root, text="Algorithm:").grid(row=1, column=0, padx=5, pady=5, sticky="e")
-        self.algo_var = tk.StringVar(value="fcfs")
-        tk.OptionMenu(root, self.algo_var, "fcfs", "sjf", "rr").grid(row=1, column=1, padx=5, pady=5)
+        self.algo_var = tk.StringVar(value="FCFS")
+        tk.OptionMenu(root, self.algo_var, "FCFS", "SJF", "RR").grid(row=1, column=1, padx=5, pady=5)
         
         # Quantum (RR için)
         tk.Label(root, text="Quantum (for RR):").grid(row=2, column=0, padx=5, pady=5, sticky="e")
@@ -45,7 +45,7 @@ class InputGUI:
     
     def toggle_quantum(self, *args):
         """RR seçilirse quantum girişini etkinleştir."""
-        self.quantum_entry.config(state='normal' if self.algo_var.get() == "rr" else 'disabled')
+        self.quantum_entry.config(state='normal' if self.algo_var.get() == "RR" else 'disabled')
     
     def create_process_inputs(self):
         """Süreç sayısı kadar giriş alanı oluştur."""
@@ -113,7 +113,7 @@ class InputGUI:
                     "burst_time": burst
                 })
             
-            algorithm = self.algo_var.get()
+            algorithm = self.algo_var.get().lower()
             quantum = None
             if algorithm == "rr":
                 quantum = int(self.quantum_var.get())
