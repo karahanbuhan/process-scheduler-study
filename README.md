@@ -31,7 +31,7 @@ Install Dependencies:
 pip install -r requirements.txt
 
 Run the Application:
-python main.py
+python src/main.py
 
 This launches a Tkinter GUI where you can input processes, select an algorithm, and view the Gantt Chart and results.
 

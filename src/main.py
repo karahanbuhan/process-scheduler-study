@@ -1,6 +1,17 @@
 from algorithms import fcfs, sjf_non_preemptive, rr
 from fractions import Fraction
 
+from input import get_process_input
+from algorithms import run_algorithm
+from visualizer import visualize_results
+
+def main():
+    # GUI üzerinden giriş al
+    get_process_input()
+
+if __name__ == "__main__":
+    main()
+
 def _rr_test():
     processes = [
         {"pid": "p1", "arrival_time": 0, "burst_time": 2},
