@@ -1,5 +1,19 @@
-from algorithms import fcfs, sjf_non_preemptive
+from algorithms import fcfs, sjf_non_preemptive, rr
 from fractions import Fraction
+
+def _rr_test():
+    processes = [
+        {"pid": "p1", "arrival_time": 0, "burst_time": 2},
+        {"pid": "p2", "arrival_time": 0, "burst_time": 3},
+        {"pid": "p3", "arrival_time": 0, "burst_time": 2},
+    ]
+
+    schedules, wt, awt = rr(processes, 1)
+
+    print("Schedules are ", schedules)
+    print("Waiting Times are ", wt)
+    n, d = Fraction.from_float(awt).limit_denominator().as_integer_ratio()
+    print("Average WT is %s=%s/%s" % (awt, n, d))
 
 def _sfj_test():
     processes = [
