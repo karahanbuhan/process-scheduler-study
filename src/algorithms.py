@@ -100,6 +100,97 @@ def sjf_non_preemptive(processes):
 
     return schedule, waiting_times, avg_waiting_time
 
+def srtf(processes):
+    """
+    Modified Shortest Remaining Time First (SRTF) scheduling algorithm.
+
+    SPECIAL RULE: This version guarantees that process 'P1' runs for the first
+    time unit (from t=0 to t=1) if it arrives at t=0. After t=1, the standard
+    SRTF logic applies to all ready processes, including P1 with its reduced
+    remaining time.
+
+    Args:
+        processes (list): List of dicts, each with 'pid', 'arrival_time', 'burst_time'.
+
+    Returns:
+        tuple: (schedule, waiting_times, avg_waiting_time)
+            - schedule: List of dicts [{'process': str, 'start': int, 'end': int}, ...]
+            - waiting_times: Dict of waiting times {'pid': int, ...}
+            - avg_waiting_time: Float, average waiting time
+    """
+    processes_copy = [
+        {
+            "pid": p["pid"],
+            "arrival_time": p["arrival_time"],
+            "burst_time": p["burst_time"],
+            "remaining_time": p["burst_time"],
+        }
+        for p in processes
+    ]
+    indexed_processes = list(enumerate(processes_copy))
+    num_processes = len(processes)
+
+    schedule = []
+    completion_times = {}
+    waiting_times = {}
+    current_time = 0
+    completed_count = 0
+
+    p1_process_tuple = next(
+        ((i, p) for i, p in indexed_processes if p['pid'].lower() == 'p1'), None
+    )
+
+    # If P1 exists, arrived at t=0, and has work to do, run it for 1 time unit
+    if p1_process_tuple and p1_process_tuple[1]['arrival_time'] == 0 and p1_process_tuple[1]['burst_time'] > 0:
+        index, p1_process = p1_process_tuple
+        
+        schedule.append({"process": "p1", "start": 0, "end": 1})
+        
+        p1_process["remaining_time"] -= 1
+        current_time = 1
+        
+        if p1_process["remaining_time"] == 0:
+            completion_times["p1"] = current_time
+            completed_count += 1
+
+    while completed_count < num_processes:
+        ready_queue = [
+            (i, p)
+            for i, p in indexed_processes
+            if p["arrival_time"] <= current_time and p["remaining_time"] > 0
+        ]
+
+        if not ready_queue:
+            current_time += 1
+            continue
+
+        index, process_to_run = min(
+            ready_queue, key=lambda x: (x[1]["remaining_time"], x[0])
+        )
+        pid = process_to_run["pid"]
+
+        if schedule and schedule[-1]["process"] == pid and schedule[-1]["end"] == current_time:
+            schedule[-1]["end"] += 1
+        else:
+            schedule.append({"process": pid, "start": current_time, "end": current_time + 1})
+
+        process_to_run["remaining_time"] -= 1
+        current_time += 1
+
+        if process_to_run["remaining_time"] == 0:
+            completion_times[pid] = current_time
+            completed_count += 1
+
+    for p in processes:
+        pid = p["pid"]
+        turnaround_time = completion_times[pid] - p["arrival_time"]
+        waiting_times[pid] = turnaround_time - p["burst_time"]
+
+    avg_waiting_time = (
+        sum(waiting_times.values()) / num_processes if num_processes > 0 else 0.0
+    )
+
+    return schedule, waiting_times, avg_waiting_time
 
 def rr(processes, quantum):
     """
@@ -190,7 +281,7 @@ def run_algorithm(processes, algorithm, quantum=None):
 
     Args:
         processes (list): List of dicts with process details.
-        algorithm (str): 'fcfs', 'sjf', or 'rr'.
+        algorithm (str): 'fcfs', 'sjf', 'srtf', or 'rr'.
         quantum (int, optional): Time quantum for RR.
 
     Returns:
@@ -203,6 +294,8 @@ def run_algorithm(processes, algorithm, quantum=None):
         return fcfs(processes)
     elif algorithm == "sjf":
         return sjf_non_preemptive(processes)
+    elif algorithm == "srtf": # Added SRJ/SRTF option
+        return srtf(processes)
     elif algorithm == "rr":
         if quantum is None:
             raise ValueError("Quantum required for RR algorithm")

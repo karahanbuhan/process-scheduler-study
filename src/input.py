@@ -27,7 +27,7 @@ class InputGUI:
             row=1, column=0, padx=5, pady=5, sticky="e"
         )
         self.algo_var = tk.StringVar(value="FCFS")
-        tk.OptionMenu(root, self.algo_var, "FCFS", "SJF", "RR").grid(
+        tk.OptionMenu(root, self.algo_var, "FCFS", "SJF", "RR", "SRTF").grid(
             row=1, column=1, padx=5, pady=5
         )
 
@@ -70,15 +70,12 @@ class InputGUI:
         for widget in self.process_frame.winfo_children():
             widget.destroy()
 
-        while len(self.entries) < num:
-            i = len(self.entries)
+        self.entries = []
+        for i in range(num):
             pid_var = tk.StringVar(value=f"p{i+1}")
             arrival_var = tk.StringVar(value="0")
             burst_var = tk.StringVar(value=str(randint(1, 10)))
             self.entries.append((pid_var, arrival_var, burst_var))
-
-        if len(self.entries) > num:
-            self.entries = self.entries[:num]
 
         tk.Label(self.process_frame, text="PID").grid(row=0, column=0, padx=5, pady=2)
         tk.Label(self.process_frame, text="Arrival Time").grid(
@@ -91,9 +88,10 @@ class InputGUI:
         for i in range(num):
             pid_var, arrival_var, burst_var = self.entries[i]
 
-            tk.Entry(self.process_frame, textvariable=pid_var, width=10).grid(
+            tk.Entry(self.process_frame, textvariable=pid_var, width=10, state="readonly").grid(
                 row=i + 1, column=0, padx=5, pady=2
             )
+            
             tk.Entry(self.process_frame, textvariable=arrival_var, width=10).grid(
                 row=i + 1, column=1, padx=5, pady=2
             )
