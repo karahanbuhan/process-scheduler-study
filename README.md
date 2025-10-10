@@ -45,14 +45,14 @@ cd process_scheduler_study
 #### Linux/MacOS:
 
 ```bash
-python -m venv venv
+python3 -m venv venv
 source venv/bin/activate
 ```
 
 #### Windows:
 
 ```bash
-python -m venv venv
+python3 -m venv venv
 venv\Scripts\activate
 ```
 
@@ -65,7 +65,7 @@ pip install -r requirements.txt
 ### Run the Application
 
 ```bash
-python src/main.py
+python3 src/main.py
 ```
 
 This launches a Tkinter GUI where you can input processes, select an algorithm, and view the Gantt Chart and results.
