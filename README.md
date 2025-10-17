@@ -1,6 +1,6 @@
 # Process Scheduler Study
 
-**process_scheduler_study** is a Python-based educational tool designed to simulate CPU scheduling algorithms (FCFS, SJF Non-Preemptive, RR (Round Robin), LJF Non-Preemtpive and SRTF) for operating systems courses.
+**process_scheduler_study** is a Python-based educational tool designed to simulate CPU scheduling algorithms (FCFS, SJF Non-Preemptive, RR (Round Robin), LJF Non-Preemptive and SRTF) for operating systems courses.
 It allows users to input process details (PID, arrival time, burst time), select an algorithm, and specify a quantum for Round Robin.
 The tool generates a Gantt Chart using Matplotlib and calculates waiting times and average waiting time to aid in studying scheduling concepts.
 
