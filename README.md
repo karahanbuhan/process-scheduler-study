@@ -40,21 +40,7 @@ git clone https://github.com/your-username/process_scheduler_study.git
 cd process_scheduler_study
 ```
 
-### Create and Activate a Virtual Environment
-
-#### Linux/MacOS:
-
-```bash
-python3 -m venv venv
-source venv/bin/activate
-```
-
-#### Windows:
-
-```bash
-python3 -m venv venv
-venv\Scripts\activate
-```
+## Install Dependencies and Run
 
 ### Install Dependencies
 
