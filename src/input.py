@@ -27,7 +27,7 @@ class InputGUI:
             row=1, column=0, padx=5, pady=5, sticky="e"
         )
         self.algo_var = tk.StringVar(value="FCFS")
-        tk.OptionMenu(root, self.algo_var, "FCFS", "SJF", "RR", "SRTF").grid(
+        tk.OptionMenu(root, self.algo_var, "FCFS", "SJF", "RR", "SRTF", "LJF").grid(
             row=1, column=1, padx=5, pady=5
         )
 

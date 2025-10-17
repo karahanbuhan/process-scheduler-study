@@ -18,7 +18,7 @@ def visualize_results(
         waiting_times (dict): Waiting times {'pid': int, ...}
         avg_waiting_time (float): Average waiting time
         mode (str): 'gui' for Matplotlib
-        algorithm (str): Name of the scheduling algorithm (e.g., 'FCFS', 'SJF', 'RR', 'SRTF')
+        algorithm (str): Name of the scheduling algorithm (e.g., 'FCFS', 'SJF', 'RR', 'SRTF', 'LJF')
         processes (list): List of process dicts [{'pid': str, 'burst_time': int, ...}, ...]
     """
     if mode == "gui":

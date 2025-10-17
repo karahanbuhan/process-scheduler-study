@@ -281,7 +281,7 @@ def run_algorithm(processes, algorithm, quantum=None):
 
     Args:
         processes (list): List of dicts with process details.
-        algorithm (str): 'fcfs', 'sjf', 'srtf', or 'rr'.
+        algorithm (str): 'fcfs', 'sjf', 'srtf', ljf, or 'rr'.
         quantum (int, optional): Time quantum for RR.
 
     Returns:
@@ -294,11 +294,85 @@ def run_algorithm(processes, algorithm, quantum=None):
         return fcfs(processes)
     elif algorithm == "sjf":
         return sjf_non_preemptive(processes)
-    elif algorithm == "srtf": # Added SRJ/SRTF option
+    elif algorithm == "srtf":
         return srtf(processes)
+    elif algorithm == "ljf":
+        return ljf_non_preemptive(processes)
     elif algorithm == "rr":
         if quantum is None:
             raise ValueError("Quantum required for RR algorithm")
         return rr(processes, quantum)
     else:
         raise ValueError(f"Unknown algorithm: {algorithm}")
+    
+def ljf_non_preemptive(processes):
+    """
+    Longest Job First (LJF) Non-Preemptive scheduling algorithm.
+
+    Args:
+        processes (list): List of dicts, each with 'pid', 'arrival_time', 'burst_time'.
+
+    Returns:
+        tuple: (schedule, waiting_times, avg_waiting_time)
+            - schedule: List of dicts [{'process': str, 'start': int, 'end': int}, ...]
+            - waiting_times: Dict of waiting times {'pid': int, ...}
+            - avg_waiting_time: Float, average waiting time
+    """
+    # Orijinal sırayı korumak için prosesleri indeksleriyle birlikte alıyoruz.
+    # Bu, burst time eşitliği durumunda FCFS uygulamamıza yardımcı olacak.
+    indexed_processes = [(i, p) for i, p in enumerate(processes)]
+    
+    schedule = []
+    waiting_times = {}
+    current_time = 0
+    completed = set()
+    num_processes = len(processes)
+
+    while len(completed) < num_processes:
+        # Mevcut zamana kadar gelmiş ve henüz tamamlanmamış prosesleri bul (hazır kuyruğu).
+        ready_processes = [
+            (i, p)
+            for i, p in indexed_processes
+            if p["pid"] not in completed and p["arrival_time"] <= current_time
+        ]
+
+        # Eğer hazırda bekleyen proses yoksa, zamanı bir sonraki prosesin geliş zamanına ilerlet.
+        if not ready_processes:
+            # Henüz tamamlanmamış tüm prosesleri bul
+            future_processes = [
+                (i, p) for i, p in indexed_processes if p["pid"] not in completed
+            ]
+            if future_processes:
+                # Bunların en erken geliş zamanına git
+                next_arrival = min(p["arrival_time"] for i, p in future_processes)
+                current_time = next_arrival
+            continue # Döngünün başına dönerek yeni hazır kuyruğunu oluştur
+
+        # Hazır prosesler arasından en uzun burst time'a sahip olanı seç.
+        # Eşitlik durumunda, daha erken gelen (arrival_time'ı küçük olan) kazanır.
+        # Eğer geliş zamanları da eşitse, orijinal listedeki sırası (indeksi) küçük olan kazanır.
+        selected = max(ready_processes, key=lambda x: (x[1]["burst_time"], -x[1]["arrival_time"], -x[0]))
+        
+        index, process = selected
+        pid = process["pid"]
+        arrival = process["arrival_time"]
+        burst = process["burst_time"]
+
+        # Prosesin başlangıç zamanı, CPU'nun boşa çıktığı zamandır.
+        start_time = current_time
+        end_time = start_time + burst
+
+        # Sonuçları kaydet
+        schedule.append({"process": pid, "start": start_time, "end": end_time})
+        waiting_times[pid] = start_time - arrival
+        completed.add(pid)
+        
+        # Zamanı ilerlet
+        current_time = end_time
+
+    # Ortalama bekleme süresini hesapla
+    avg_waiting_time = (
+        sum(waiting_times.values()) / num_processes if num_processes > 0 else 0.0
+    )
+
+    return schedule, waiting_times, avg_waiting_time
