@@ -67,15 +67,37 @@ class InputGUI:
             messagebox.showerror("Error", "Please enter a valid number (1-10)")
             return
 
+        # --- MODIFICATION START ---
+        # 1. Save current values before destroying widgets
+        old_values = []
+        for pid_var, arrival_var, burst_var in self.entries:
+            old_values.append({
+                "pid": pid_var.get(),
+                "arrival": arrival_var.get(),
+                "burst": burst_var.get()
+            })
+        # --- MODIFICATION END ---
+
         for widget in self.process_frame.winfo_children():
             widget.destroy()
 
         self.entries = []
         for i in range(num):
-            pid_var = tk.StringVar(value=f"p{i+1}")
-            arrival_var = tk.StringVar(value="0")
-            burst_var = tk.StringVar(value=str(randint(1, 10)))
+            # --- MODIFICATION START ---
+            if i < len(old_values):
+                # 2. Restore old values if they exist
+                pid_var = tk.StringVar(value=old_values[i]["pid"])
+                arrival_var = tk.StringVar(value=old_values[i]["arrival"])
+                burst_var = tk.StringVar(value=old_values[i]["burst"])
+            else:
+                # 3. Create new default/random values only for new processes
+                pid_var = tk.StringVar(value=f"p{i+1}")
+                arrival_var = tk.StringVar(value="0")
+                burst_var = tk.StringVar(value=str(randint(1, 10)))
+            # --- MODIFICATION END ---
+            
             self.entries.append((pid_var, arrival_var, burst_var))
+
 
         tk.Label(self.process_frame, text="PID").grid(row=0, column=0, padx=5, pady=2)
         tk.Label(self.process_frame, text="Arrival Time").grid(
@@ -108,6 +130,9 @@ class InputGUI:
             messagebox.showerror("Error", "Please enter a valid number (1-10)")
             return
 
+        # This clears all entries, so the new create_process_inputs
+        # will generate all new random processes, which is the
+        # expected behavior for "Generate Random".
         self.entries = []
         self.create_process_inputs()
 
