@@ -2,7 +2,7 @@
 
 **process_scheduler_study** is a Python-based educational tool designed to simulate CPU scheduling algorithms (FCFS, SJF Non-Preemptive, RR (Round Robin), LJF Non-Preemptive and SRTF) for operating systems courses.
 It allows users to input process details (PID, arrival time, burst time), select an algorithm, and specify a quantum for Round Robin.
-The tool generates a Gantt Chart using Matplotlib and calculates waiting times and average waiting time to aid in studying scheduling concepts.
+The tool generates a Gantt Chart using Matplotlib and calculates waiting times, average waiting time, average response time and average turn around time to aid in studying scheduling concepts.
 
 ---
 
@@ -19,8 +19,8 @@ The tool generates a Gantt Chart using Matplotlib and calculates waiting times a
 * Supports FCFS, SJF (Non-Preemptive), Round Robin, LJF (Non-Preemptive) and SRTF scheduling algorithms.
 * Interactive Tkinter GUI for entering process details and algorithm selection.
 * Random process generation for quick testing.
-* Visualizes results with Gantt Charts and displays waiting times.
-* Calculates average waiting time as a float (e.g., 5.4) and also in fraction format (e.g. 3/10).
+* Visualizes results with Gantt Charts and displays waiting times, response times and turn around times.
+* Calculates average waiting time, response time and turn around times as a float (e.g., 5.4) and also in fraction format (e.g. 3/10).
 
 ---
 
@@ -64,7 +64,7 @@ This launches a Tkinter GUI where you can input processes, select an algorithm, 
 2. Provide PID, arrival time, and burst time for each process, or click **"Generate Random"** for automatic input.
 3. Select an algorithm (**FCFS**, **SJF**, **RR** or **SRTF**) from the dropdown menu.
 4. For **RR**, specify a quantum value.
-5. Click **"Run"** to simulate and view the Gantt Chart, waiting times, and average waiting time.
+5. Click **"Run"** to simulate and view the Gantt Chart, waiting times, average waiting time, average response time and average turn around time.
 
 ---
 
