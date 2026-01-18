@@ -7,10 +7,10 @@ The tool generates a Gantt Chart using Matplotlib and calculates waiting times, 
 ---
 
 ## Screenshots
+<img width="2370" height="1500" alt="fcfs" src="https://github.com/user-attachments/assets/7ac7fe68-6d88-47a5-80db-b86f4328accb" />
+<img width="2370" height="1500" alt="rr" src="https://github.com/user-attachments/assets/f43a8577-9e91-4d7d-8e84-5c433bfb0786" />
 
-<img width="2370" height="1500" alt="screenshot1" src="https://github.com/user-attachments/assets/1a4f1a0f-21a1-4260-b05d-247b3bcb88e2" />
-
-<img width="2370" height="1500" alt="screenshot2" src="https://github.com/user-attachments/assets/0f1c61de-5c32-4ac5-aca6-b6b59e0ddbf6" />
+> *AWT stands for Average Waiting Time, ATA for Average Turn-Around Time, ART for Average Response Time in graph titles*.
 
 ---
 
