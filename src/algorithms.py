@@ -4,6 +4,22 @@ class Process:
         self.arrival_time = arrival_time
         self.burst_time = burst_time
 
+def ata_and_art(schedule):
+    sum_tat = 0
+    sum_rt = 0
+    i = 0
+    tats = {}
+    read_pids = []
+    for process in schedule:
+        pid = process["process"]
+        if pid not in read_pids:
+            sum_rt += process["start"]
+            i += 1
+            read_pids.append(pid)
+        tats[pid] = process["end"]
+    sum_tat = sum(tats.values())
+        
+    return (sum_tat/i), (sum_rt/i)
 
 def fcfs(processes):
     """
