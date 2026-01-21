@@ -21,7 +21,7 @@ The tool generates a Gantt Chart using Matplotlib and calculates waiting times, 
 * Random process generation for quick testing.
 * Visualizes results with Gantt Charts and displays waiting times, response times and turn around times.
 * Calculates average waiting time, response time and turn around times as a float (e.g., 5.4) and also in fraction format (e.g. 3/10).
-* Shows each WT(pid), TAT(pid), RT(pid) instances in console.
+* Shows each WT(pid), TAT(pid), RT(pid) times in console.
 
 ---
 
