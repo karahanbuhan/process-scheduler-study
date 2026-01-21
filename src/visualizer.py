@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 from fractions import Fraction
 
-from algorithms import ata_and_art
+from algorithms import tats_and_rts
 
 
 def visualize_results(
@@ -24,25 +24,37 @@ def visualize_results(
         processes (list): List of process dicts [{'pid': str, 'burst_time': int, ...}, ...]
     """
     if mode == "gui":
+        print(f"\nShowing results for {algorithm}: {processes}")
         awt_n, awt_d = (
             Fraction.from_float(avg_waiting_time).limit_denominator().as_integer_ratio()
         )
-
         print("Waiting Times:")
         for pid, wt in waiting_times.items():
-            print(f"{pid}: {wt}")
+            print(f"\tWT({pid}) = {wt}")
         print("Average WT is %s=%s/%s" % (avg_waiting_time, awt_n, awt_d))
 
-        ata, art = ata_and_art(schedule)
+        turn_around_times, response_times = tats_and_rts(schedule)
+        print("Turn Around Times:")
+        for pid, tat in turn_around_times.items():
+            print(f"\tTAT({pid}) = {tat}")
+        avg_turn_around_time = sum(turn_around_times.values()) / len(turn_around_times)
         ata_n, ata_d = (
-            Fraction.from_float(ata).limit_denominator().as_integer_ratio()
+            Fraction.from_float(avg_turn_around_time)
+            .limit_denominator()
+            .as_integer_ratio()
         )
-        print("Average TAT is %s=%s/%s" % (ata, ata_n, ata_d))
+        print("Average TAT is %s=%s/%s" % (avg_turn_around_time, ata_n, ata_d))
 
+        print("Response Times:")
+        for pid, rt in response_times.items():
+            print(f"\tRT({pid}) = {rt}")
+        avg_response_time = sum(response_times.values()) / len(response_times)
         art_n, art_d = (
-            Fraction.from_float(art).limit_denominator().as_integer_ratio()
+            Fraction.from_float(avg_response_time)
+            .limit_denominator()
+            .as_integer_ratio()
         )
-        print("Average RT is %s=%s/%s" % (art, art_n, art_d))
+        print("Average RT is %s=%s/%s" % (avg_response_time, art_n, art_d))
 
         burst_times_str = "No Processes"
         if processes:
@@ -65,7 +77,7 @@ def visualize_results(
                 continue
 
         ax.set_title(
-            f"Gantt Chart ({algorithm}, Processes: {burst_times_str}, AWT: {avg_waiting_time:.2f} = {awt_n}/{awt_d}, ATA: {ata:.2f} = {ata_n}/{ata_d}, ART: {art:.2f} = {art_n}/{art_d})"
+            f"Gantt Chart ({algorithm}, Processes: {burst_times_str}, AWT: {avg_waiting_time:.2f} = {awt_n}/{awt_d}, ATA: {avg_turn_around_time:.2f} = {ata_n}/{ata_d}, ART: {avg_response_time:.2f} = {art_n}/{art_d})"
         )
         ax.set_xlabel("Time")
         ax.set_ylabel("Processes")
